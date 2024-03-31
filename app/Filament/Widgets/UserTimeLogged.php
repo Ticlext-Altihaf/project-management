@@ -2,7 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Ticket;
 use App\Models\User;
 use Filament\Widgets\BarChartWidget;
 
@@ -22,7 +21,7 @@ class UserTimeLogged extends BarChartWidget
         return auth()->user()->can('List tickets');
     }
 
-    protected function getHeading(): string
+    public function getHeading(): string
     {
         return __('Time logged by users');
     }

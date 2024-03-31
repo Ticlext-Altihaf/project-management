@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use App\Settings\GeneralSettings;
 use Filament\Facades\Filament;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\Config;
@@ -35,39 +40,34 @@ class AppServiceProvider extends ServiceProvider
 
         // Register custom Filament theme
         Filament::serving(function () {
-            Filament::registerTheme(
-                app(Vite::class)('resources/css/filament.scss'),
-            );
+            FilamentAsset::register([
+                Css::make('filament', app(Vite::class)('resources/css/filament.scss')),
+            ]);
         });
 
         // Register tippy styles
-        Filament::registerStyles([
-            'https://unpkg.com/tippy.js@6/dist/tippy.css',
+        FilamentAsset::register([
+            Js::make('tippy.js', 'https://unpkg.com/tippy.js@6/dist/tippy.umd.js'),
         ]);
 
         // Register scripts
         try {
-            Filament::registerScripts([
-                app(Vite::class)('resources/js/filament.js'),
+            FilamentAsset::register([
+                Js::make('app', app(Vite::class)('resources/js/filament.js'))
             ]);
         } catch (\Exception $e) {
             // Manifest not built yet!
         }
 
         // Add custom meta (favicon)
-        Filament::pushMeta([
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::HEAD_START,
+            fn() =>
             new HtmlString('<link rel="icon"
                                        type="image/x-icon"
                                        href="' . config('app.logo') . '">'),
-        ]);
+        );
 
-        // Register navigation groups
-        Filament::registerNavigationGroups([
-            __('Management'),
-            __('Referential'),
-            __('Security'),
-            __('Settings'),
-        ]);
 
         // Force HTTPS over HTTP
         if (env('APP_FORCE_HTTPS') ?? false) {

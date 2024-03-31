@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Timesheet;
 
 use App\Models\Ticket;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -12,9 +14,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 
-class TimeLogged extends Component implements HasTable
+class TimeLogged extends Component implements HasTable, HasForms
 {
     use InteractsWithTable;
+    use InteractsWithForms;
+
 
     public Ticket $ticket;
 

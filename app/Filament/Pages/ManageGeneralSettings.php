@@ -4,14 +4,13 @@ namespace App\Filament\Pages;
 
 use App\Models\Role;
 use App\Settings\GeneralSettings;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Pages\Actions\Action;
 use Filament\Pages\SettingsPage;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -97,7 +96,7 @@ class ManageGeneralSettings extends SettingsPage
         ];
     }
 
-    protected function getSaveFormAction(): Action
+    public function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()->label(__('Save'));
     }

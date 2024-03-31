@@ -8,9 +8,13 @@ use Carbon\Carbon;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property Form $form
+ */
 class RoadMap extends Page implements HasForms
 {
     use InteractsWithForms;
@@ -28,6 +32,7 @@ class RoadMap extends Page implements HasForms
     public Epic|null $epic = null;
 
     public bool $ticket = false;
+    public ?array $data = [];
 
     protected $listeners = [
         'closeEpicDialog' => 'closeDialog',
@@ -62,26 +67,28 @@ class RoadMap extends Page implements HasForms
         }
     }
 
-    protected function getFormSchema(): array
+    public function form(Form $form): Form
     {
-        return [
-            Select::make('selectedProject')
-                ->placeholder(__('Project'))
-                ->disableLabel()
-                ->searchable()
-                ->extraAttributes([
-                    'class' => 'min-w-[16rem]'
-                ])
-                ->disablePlaceholderSelection()
-                ->required()
-                ->options(function () {
-                    return $this->projectQuery()
-                        ->get()
-                        ->pluck('name', 'id')
-                        ->toArray();
-                })
-        ];
+        return $form
+            ->schema([
+                Select::make('selectedProject')
+                    ->placeholder(__('Project'))
+                    ->hiddenLabel()
+                    ->searchable()
+                    ->extraAttributes([
+                        'class' => 'min-w-[16rem]'
+                    ])
+                    ->required()
+                    ->options(function () {
+                        return $this->projectQuery()
+                            ->get()
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+            ])
+            ->statePath('data');
     }
+
 
     public function filter(): void
     {
