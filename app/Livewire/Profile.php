@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
+use Filament\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 use JeffGreco13\FilamentBreezy\Pages\MyProfile as BaseProfile;
 
@@ -47,12 +48,18 @@ class Profile extends BaseProfile
         if ($loginColumnValue != $this->user->{$this->loginColumn}) {
             $this->user->newEmail($loginColumnValue);
         }
-        $this->notify("success", __('filament-breezy::default.profile.personal_info.notify'));
+        Notification::make()
+            ->title(__('filament-breezy::default.profile.personal_info.notify'))
+            ->success()
+            ->send();
     }
 
     public function resendPending(): void
     {
         $this->user->resendPendingEmailVerificationMail();
-        $this->notify('success', __('Email verification sent'));
+        Notification::make()
+            ->title(__('Email verification sent'))
+            ->success()
+            ->send();
     }
 }

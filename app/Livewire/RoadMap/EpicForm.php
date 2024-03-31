@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\RoadMap;
+namespace App\Livewire\RoadMap;
 
 use App\Models\Epic;
 use App\Models\Project;
@@ -11,18 +11,23 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Livewire\Component;
-
+/**
+ * @property Form $form
+ */
 class EpicForm extends Component implements HasForms
 {
     use InteractsWithForms;
 
     public Epic $epic;
     public array $epics = [];
+    public ?array $data = [];
 
     public function mount()
     {
+
         $query = Epic::query();
         $query->where('project_id', $this->epic->project_id);
         if ($this->epic->id) {
@@ -37,39 +42,46 @@ class EpicForm extends Component implements HasForms
         return view('livewire.road-map.epic-form');
     }
 
-    protected function getFormSchema(): array
+
+    public function form(Form $form): Form
     {
-        return [
-            Grid::make()
-                ->schema([
-                    Select::make('project_id')
-                        ->label(__('Project'))
-                        ->disabled()
-                        ->options(Project::all()->pluck('name', 'id')),
+        return $form
+            ->schema([
+                Grid::make()
+                    ->schema([
+                        Select::make('project_id')
+                            ->label(__('Project'))
+                            ->disabled()
+                            ->dehydrated(true)
+                            ->options(Project::all()->pluck('name', 'id')),
 
-                    Select::make('parent_id')
-                        ->label(__('Parent epic'))
-                        ->searchable()
-                        ->options($this->epics),
-                ]),
+                        Select::make('parent_id')
+                            ->label(__('Parent epic'))
+                            ->searchable()
+                            ->options($this->epics),
+                    ]),
 
-            TextInput::make('name')
-                ->label(__('Epic name'))
-                ->required()
-                ->maxLength(255),
+                TextInput::make('name')
+                    ->label(__('Epic name'))
+                    ->required()
+                    ->maxLength(255),
 
-            Grid::make()
-                ->schema([
-                    DatePicker::make('starts_at')
-                        ->label(__('Starts at'))
-                        ->required(),
+                Grid::make()
+                    ->schema([
+                        DatePicker::make('starts_at')
+                            ->label(__('Starts at'))
+                            ->required(),
 
-                    DatePicker::make('ends_at')
-                        ->label(__('Ends at'))
-                        ->required(),
-                ]),
-        ];
+                        DatePicker::make('ends_at')
+                            ->label(__('Ends at'))
+                            ->required(),
+                    ]),
+            ])
+            ->statePath('data');
     }
+
+
+
 
     public function submit(): void
     {
@@ -86,7 +98,7 @@ class EpicForm extends Component implements HasForms
 
     public function cancel($refresh = false): void
     {
-        $this->emit('closeEpicDialog', $refresh);
+        $this->dispatch('closeEpicDialog', $refresh);
     }
 
     public function delete(): void
@@ -96,6 +108,6 @@ class EpicForm extends Component implements HasForms
             $ticket->save();
         });
         $this->epic->delete();
-        $this->emit('closeEpicDialog', true);
+        $this->dispatch('closeEpicDialog', true);
     }
 }

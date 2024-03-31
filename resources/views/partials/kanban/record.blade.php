@@ -1,6 +1,6 @@
 <div class="kanban-record" data-id="{{ $record['id'] }}">
     <button type="button" class="handle">
-        <x-heroicon-o-arrows-expand class="w-5 h-5" />
+        <x-heroicon-o-arrows-pointing-out class="w-5 h-5" />
     </button>
     <div class="record-info">
         @if($this->isMultiProject())
@@ -8,7 +8,7 @@
                 {{ $record['project']->name }}
             </span>
         @endif
-        <a href="{{ route('filament.resources.tickets.view', $record['id']) }}"
+        <a href="{{ \App\Filament\Resources\TicketResource::getUrl('view', ['record' => $record['id']]) }}"
            target="_blank"
            class="record-title">
             <span class="code">{{ $record['code'] }}</span>

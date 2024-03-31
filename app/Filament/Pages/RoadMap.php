@@ -95,7 +95,7 @@ class RoadMap extends Page implements HasForms
         $data = $this->form->getState();
         $project = $data['selectedProject'];
         $this->project = Project::where('id', $project)->first();
-        $this->dispatchBrowserEvent('projectChanged', [
+        $this->dispatch('projectChanged', [
             'url' => route('road-map.data', $this->project),
             'start_date' => Carbon::parse($this->project->epicsFirstDate)->subYear()->format('Y-m-d'),
             'end_date' => Carbon::parse($this->project->epicsLastDate)->addYear()->format('Y-m-d'),

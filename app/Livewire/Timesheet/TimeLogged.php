@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire\Timesheet;
+namespace App\Livewire\Timesheet;
 
 use App\Models\Ticket;
 use Filament\Forms\Concerns\InteractsWithForms;

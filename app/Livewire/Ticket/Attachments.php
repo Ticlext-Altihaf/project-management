@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Ticket;
+namespace App\Livewire\Ticket;
 
 use App\Models\Ticket;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -56,7 +56,7 @@ class Attachments extends Component implements HasForms, HasTable
     {
         $this->form->getState();
         $this->form->fill();
-        $this->emit('filesUploaded');
+        $this->dispatch('filesUploaded');
         Notification::make()->title(__('Ticket attachments saved'))->success()->send();
     }
 

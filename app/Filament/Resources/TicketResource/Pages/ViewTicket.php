@@ -65,13 +65,19 @@ class ViewTicket extends ViewRecord implements HasForms
                             ->first()
                     ) {
                         $sub->delete();
-                        $this->notify('success', __('You unsubscribed from the ticket'));
+                        Notification::make()
+                            ->success()
+                            ->title(__('You unsubscribed from the ticket'))
+                            ->send();
                     } else {
                         TicketSubscriber::create([
                             'user_id' => auth()->user()->id,
                             'ticket_id' => $this->record->id
                         ]);
-                        $this->notify('success', __('You subscribed to the ticket'));
+                        Notification::make()
+                            ->success()
+                            ->title(__('You subscribed to the ticket'))
+                            ->send();
                     }
                     $this->record->refresh();
                 }),
@@ -123,7 +129,10 @@ class ViewTicket extends ViewRecord implements HasForms
                         'comment' => $comment
                     ]);
                     $this->record->refresh();
-                    $this->notify('success', __('Time logged into ticket'));
+                    Notification::make()
+                        ->title(__('Time logged'))
+                        ->success()
+                        ->send();
                 }),
             Actions\ActionGroup::make([
                 Actions\Action::make('exportLogHours')
@@ -184,7 +193,10 @@ class ViewTicket extends ViewRecord implements HasForms
         }
         $this->record->refresh();
         $this->cancelEditComment();
-        $this->notify('success', __('Comment saved'));
+        Notification::make()
+            ->title(__('New comment'))
+            ->success()
+            ->send();
     }
 
     public function isAdministrator(): bool
@@ -230,7 +242,10 @@ class ViewTicket extends ViewRecord implements HasForms
     {
         TicketComment::where('id', $commentId)->delete();
         $this->record->refresh();
-        $this->notify('success', __('Comment deleted'));
+        Notification::make()
+            ->title(__('Comment deleted'))
+            ->success()
+            ->send();
     }
 
     public function cancelEditComment(): void

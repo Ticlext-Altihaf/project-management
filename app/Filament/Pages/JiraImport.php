@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
@@ -241,10 +242,14 @@ class JiraImport extends Page implements HasForms
                 $tickets[] = $this->getJiraTicketDetails($this->host, $this->username, $this->token, $url);
             }
             dispatch(new ImportJiraTicketsJob($tickets, auth()->user()));
-            $this->notify('success', __('The importation job is started, when finished you will be notified'), true);
+            Notification::make()->title(__('The importation job is started, when finished you will be notified'))
+                ->success()
+                ->send();
             $this->redirect(JiraImport::getUrl());
         } else {
-            $this->notify('warning', __('Please choose at least a jira ticket to import'));
+            Notification::make()->title(__('Please choose at least a jira ticket to import'))
+                ->warning()
+                ->send();
         }
     }
 
