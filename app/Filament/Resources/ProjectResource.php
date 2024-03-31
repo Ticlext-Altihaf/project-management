@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Exports\ProjectHoursExport;
+use App\Filament\Pages\Kanban;
+use App\Filament\Pages\Scrum;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
@@ -13,6 +15,7 @@ use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
@@ -178,10 +181,7 @@ class ProjectResource extends Resource
                     ->limit(2),
 
                 Tables\Columns\BadgeColumn::make('type')
-                    ->enum([
-                        'kanban' => __('Kanban'),
-                        'scrum' => __('Scrum')
-                    ])
+
                     ->colors([
                         'secondary' => 'kanban',
                         'warning' => 'scrum',
@@ -224,7 +224,7 @@ class ProjectResource extends Resource
                                 'user_id' => auth()->user()->id
                             ]);
                         }
-                        Filament::notify('success', __('Project updated'));
+                        Notification::make()->title(__('Project updated'))->success()->send();
                     }),
 
                 Tables\Actions\ViewAction::make(),
@@ -251,9 +251,9 @@ class ProjectResource extends Resource
                         ->color('gray')
                         ->url(function ($record) {
                             if ($record->type === 'scrum') {
-                                return route('filament.pages.scrum/{project}', ['project' => $record->id]);
+                                return Scrum::getUrl(['project' => $record->id]);
                             } else {
-                                return route('filament.pages.kanban/{project}', ['project' => $record->id]);
+                                return Kanban::getUrl(['project' => $record->id]);
                             }
                         }),
                 ])->color('gray'),

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Filament\Pages\Board;
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\TicketPriority;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
@@ -161,7 +163,7 @@ trait KanbanScrumHelper
             $ticket->order = $newIndex;
             $ticket->status_id = $newStatus;
             $ticket->save();
-            Filament::notify('success', __('Ticket updated'));
+            Notification::make()->title(__('Ticket updated'))->success()->send();
         }
     }
 
@@ -197,7 +199,7 @@ trait KanbanScrumHelper
     protected function kanbanHeading(): string|Htmlable
     {
         $heading = '<div class="w-full flex flex-col gap-1">';
-        $heading .= '<a href="' . route('filament.pages.board') . '"
+        $heading .= '<a href="' . Board::getUrl() . '"
                             class="text-primary-500 text-xs font-medium hover:underline">';
         $heading .= __('Back to board');
         $heading .= '</a>';

@@ -5,13 +5,13 @@ namespace App\Http\Livewire\RoadMap;
 use App\Models\Epic;
 use App\Models\Project;
 use App\Models\Ticket;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class EpicForm extends Component implements HasForms
@@ -80,7 +80,7 @@ class EpicForm extends Component implements HasForms
         $this->epic->starts_at = $data['starts_at'];
         $this->epic->ends_at = $data['ends_at'];
         $this->epic->save();
-        Filament::notify('success', __('Epic successfully saved'));
+        Notification::make()->title(__('Epic successfully saved'))->success()->send();
         $this->cancel(true);
     }
 

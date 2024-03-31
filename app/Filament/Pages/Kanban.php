@@ -4,9 +4,9 @@ namespace App\Filament\Pages;
 
 use App\Helpers\KanbanScrumHelper;
 use App\Models\Project;
-use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions\Action;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
@@ -32,7 +32,7 @@ class Kanban extends Page implements HasForms
     {
         $this->project = $project;
         if ($this->project->type === 'scrum') {
-            $this->redirect(route('filament.pages.scrum/{project}', ['project' => $project]));
+            $this->redirect(Scrum::getUrl(['project' => $this->project->id]));
         } elseif (
             $this->project->owner_id != auth()->user()->id
             &&
@@ -52,7 +52,7 @@ class Kanban extends Page implements HasForms
                 ->color('gray')
                 ->action(function () {
                     $this->getRecords();
-                    Filament::notify('success', __('Kanban board updated'));
+                    Notification::make()->title(__('Kanban board updated'))->success()->send();
                 })
         ];
     }

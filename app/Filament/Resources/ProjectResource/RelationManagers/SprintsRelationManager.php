@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\ProjectResource\RelationManagers;
 
+use App\Filament\Pages\Kanban;
+use App\Filament\Pages\Scrum;
 use App\Models\Sprint;
 use App\Models\Ticket;
 use Carbon\Carbon;
@@ -155,9 +157,9 @@ class SprintsRelationManager extends RelationManager
                                     )
                                     ->url(function () use ($record) {
                                         if ($record->project->type === 'scrum') {
-                                            return route('filament.pages.scrum/{project}', ['project' => $record->project->id]);
+                                            return Scrum::getUrl(['project' => $record->project->id]);
                                         } else {
-                                            return route('filament.pages.kanban/{project}', ['project' => $record->project->id]);
+                                            return Kanban::getUrl(['project' => $record->project->id]);
                                         }
                                     }),
                             ])
@@ -227,7 +229,10 @@ class SprintsRelationManager extends RelationManager
                         $tickets = $data['tickets'];
                         Ticket::where('sprint_id', $record->id)->update(['sprint_id' => null]);
                         Ticket::whereIn('id', $tickets)->update(['sprint_id' => $record->id]);
-                        Filament::notify('success', __('Tickets associated with sprint'));
+                        Notification::make('sprint_tickets_associated')
+                            ->success()
+                            ->title(__('Tickets associated with sprint'))
+                            ->send();
                     }),
 
                 Tables\Actions\EditAction::make(),

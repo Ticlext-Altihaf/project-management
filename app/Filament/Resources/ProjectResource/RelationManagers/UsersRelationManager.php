@@ -34,7 +34,6 @@ class UsersRelationManager extends RelationManager
 
                 Tables\Columns\BadgeColumn::make('pivot.role')
                     ->label(__('User role'))
-                    ->enum(config('system.projects.affectations.roles.list'))
                     ->colors(config('system.projects.affectations.roles.colors'))
                     ->searchable()
                     ->sortable(),

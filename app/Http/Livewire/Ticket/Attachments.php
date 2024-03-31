@@ -3,10 +3,10 @@
 namespace App\Http\Livewire\Ticket;
 
 use App\Models\Ticket;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -57,7 +57,7 @@ class Attachments extends Component implements HasForms, HasTable
         $this->form->getState();
         $this->form->fill();
         $this->emit('filesUploaded');
-        Filament::notify('success', __('Ticket attachments saved'));
+        Notification::make()->title(__('Ticket attachments saved'))->success()->send();
     }
 
     public function filesUploaded(): void
@@ -96,7 +96,7 @@ class Attachments extends Component implements HasForms, HasTable
             DeleteAction::make()
                 ->action(function ($record) {
                     $record->delete();
-                    Filament::notify('success', __('Ticket attachment deleted'));
+                    Notification::make()->title(__('Ticket attachment deleted'))->success()->send();
                 })
         ];
     }

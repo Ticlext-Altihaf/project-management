@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ProjectResource\Pages;
 
+use App\Filament\Pages\Scrum;
 use App\Filament\Resources\ProjectResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ViewRecord;
@@ -22,9 +23,9 @@ class ViewProject extends ViewRecord
                 ->color('gray')
                 ->url(function () {
                     if ($this->record->type === 'scrum') {
-                        return route('filament.pages.scrum/{project}', ['project' => $this->record->id]);
+                        return Scrum::getUrl(['project' => $this->record->id]);
                     } else {
-                        return route('filament.pages.kanban/{project}', ['project' => $this->record->id]);
+                        return \App\Filament\Pages\Kanban::getUrl(['project' => $this->record->id]);
                     }
                 }),
 

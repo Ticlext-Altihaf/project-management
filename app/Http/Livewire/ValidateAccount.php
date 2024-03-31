@@ -7,6 +7,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -52,7 +53,7 @@ class ValidateAccount extends Component implements HasForms
         $this->user->email_verified_at = now();
         $this->user->save();
         auth()->login($this->user);
-        Filament::notify('success', __('Account verified'), true);
+        Notification::make()->title(__('Account verified'))->success()->send();
         redirect()->to(route('filament.pages.dashboard'));
     }
 }

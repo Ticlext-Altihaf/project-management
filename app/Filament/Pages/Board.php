@@ -72,9 +72,9 @@ class Board extends Page implements HasForms
         $data = $this->form->getState();
         $project = Project::find($data['project']);
         if ($project->type === "scrum") {
-            $this->redirect(route('filament.pages.scrum/{project}', ['project' => $project]));
+            $this->redirect(Scrum::getUrl(['project' => $project->id]));
         } else {
-            $this->redirect(route('filament.pages.kanban/{project}', ['project' => $project]));
+            $this->redirect(Kanban::getUrl(['project' => $project->id]));
         }
     }
 }

@@ -16,13 +16,13 @@ class TicketTypeSeeder extends Seeder
         ],
         [
             'name' => 'Evolution',
-            'icon' => 'heroicon-o-clipboard-list',
+            'icon' => 'heroicon-o-clipboard-document-list',
             'color' => '#008000',
             'is_default' => false
         ],
         [
             'name' => 'Bug',
-            'icon' => 'heroicon-o-x',
+            'icon' => 'heroicon-o-x-circle',
             'color' => '#ff0000',
             'is_default' => false
         ],

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ProjectResource\Pages;
 
+use App\Filament\Pages\Scrum;
 use App\Filament\Resources\ProjectResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -22,9 +23,9 @@ class EditProject extends EditRecord
                 ->color('gray')
                 ->url(function () {
                     if ($this->record->type === 'scrum') {
-                        return route('filament.pages.scrum/{project}', ['project' => $this->record->id]);
+                        return Scrum::getUrl(['project' => $this->record->id]);
                     } else {
-                        return route('filament.pages.kanban/{project}', ['project' => $this->record->id]);
+                        return Scrum::getUrl(['project' => $this->record->id]);
                     }
                 }),
 

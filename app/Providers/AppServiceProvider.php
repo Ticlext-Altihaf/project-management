@@ -10,7 +10,6 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\HtmlString;
@@ -41,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         // Register custom Filament theme
         Filament::serving(function () {
             FilamentAsset::register([
-                Css::make('filament', app(Vite::class)('resources/css/filament.scss')),
+                Css::make('filament', \Illuminate\Support\Facades\Vite::asset('resources/css/filament.scss'))
             ]);
         });
 
@@ -53,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
         // Register scripts
         try {
             FilamentAsset::register([
-                Js::make('app', app(Vite::class)('resources/js/filament.js'))
+                Js::make('app', \Illuminate\Support\Facades\Vite::asset('resources/js/filament.js')),
             ]);
         } catch (\Exception $e) {
             // Manifest not built yet!

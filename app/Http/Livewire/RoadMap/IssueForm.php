@@ -8,11 +8,10 @@ use App\Models\TicketPriority;
 use App\Models\TicketStatus;
 use App\Models\TicketType;
 use App\Models\User;
-use Closure;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class IssueForm extends Component implements HasForms
@@ -175,7 +174,7 @@ class IssueForm extends Component implements HasForms
     {
         $data = $this->form->getState();
         Ticket::create($data);
-        Filament::notify('success', __('Ticket successfully saved'));
+        Notification::make()->title(__('Ticket successfully saved'))->success()->send();
         $this->cancel(true);
     }
 

@@ -242,7 +242,7 @@ class JiraImport extends Page implements HasForms
             }
             dispatch(new ImportJiraTicketsJob($tickets, auth()->user()));
             $this->notify('success', __('The importation job is started, when finished you will be notified'), true);
-            $this->redirect(route('filament.pages.jira-import'));
+            $this->redirect(JiraImport::getUrl());
         } else {
             $this->notify('warning', __('Please choose at least a jira ticket to import'));
         }
