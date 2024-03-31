@@ -121,7 +121,7 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         );
     }
 
-    public function canAccessFilament(): bool
+    public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return true;
     }
