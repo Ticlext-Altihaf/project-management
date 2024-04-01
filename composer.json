@@ -30,7 +30,6 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "filament/upgrade": "^3.2",
         "kkomelin/laravel-translatable-string-exporter": "^1.17",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
@@ -101,6 +100,6 @@
             "pestphp/pest-plugin": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
